@@ -4,11 +4,11 @@ package i18n
 // Keys are the English strings passed to T(); changing an English string
 // creates a new key and is caught by the coverage test.
 var catalogZHCN = map[string]string{
-	"credential id or label": "凭据 id 或 label",
-	"apikey credential id or label": "apikey 凭据 id 或 label",
-	"envvar credential id or label": "envvar 凭据 id 或 label",
-	"agent-pwd cred show <id|label>": "agent-pwd cred show <id|label>",
-	"agent-pwd cred rm <id|label>": "agent-pwd cred rm <id|label>",
+	"credential label or id": "凭据 label 或 id",
+	"apikey credential label or id": "apikey 凭据 label 或 id",
+	"envvar credential label or id": "envvar 凭据 label 或 id",
+	"agent-pwd cred show <label|id>": "agent-pwd cred show <label|id>",
+	"agent-pwd cred rm <label|id>": "agent-pwd cred rm <label|id>",
 	"Adding an existing label overwrites that credential; its ID and created_at are preserved.": "如果 label 已存在，会覆盖该凭据；其 ID 和 created_at 保持不变。",
 	"port (optional)": "port（可选）",
 	"server port (optional; overrides secret.port)": "服务器端口（可选；覆盖 secret.port）",

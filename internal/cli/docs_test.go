@@ -3,6 +3,8 @@ package cli
 import (
 	"bytes"
 	"encoding/json"
+	"os"
+	"path/filepath"
 	"regexp"
 	"strings"
 	"testing"
@@ -178,5 +180,44 @@ func TestHelpLocalization(t *testing.T) {
 		if !strings.Contains(out, phrase) {
 			t.Errorf("help (%s): exit %d, missing %q: %s", lang, code, phrase, out)
 		}
+	}
+}
+
+// TestNoStaleCredentialPlaceholders guards the documentation sweep: the
+// historical design snapshot is exempt because it is an archived spec.
+func TestNoStaleCredentialPlaceholders(t *testing.T) {
+	stale := []string{
+		"--cred <id>", "--cred <label>", "--cred <label-or-id>",
+		"--cred <credential-label>", "cred show <id|label>", "cred rm <id|label>",
+		"cred show <label-or-id>", "cred rm <label-or-id>",
+	}
+	root := filepath.Join("..", "..")
+	err := filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+		if info.IsDir() && (info.Name() == ".git" || info.Name() == "bin") {
+			return filepath.SkipDir
+		}
+		if info.IsDir() || !strings.HasSuffix(path, ".md") {
+			return nil
+		}
+		if strings.Contains(filepath.ToSlash(path), "/docs/design/") {
+			return nil
+		}
+		data, err := os.ReadFile(path)
+		if err != nil {
+			return err
+		}
+		text := string(data)
+		for _, bad := range stale {
+			if strings.Contains(text, bad) {
+				t.Errorf("%s still contains %q", path, bad)
+			}
+		}
+		return nil
+	})
+	if err != nil {
+		t.Fatal(err)
 	}
 }

@@ -16,7 +16,7 @@ See [简体中文](README.zh-CN.md).
 
 | File | Usage | Expected behavior |
 |---|---|---|
-| `run_and_wait.sh` | `run_and_wait.sh <high-risk-credential-label>` | Runs `agent-pwd env run --cred "$label" -- true`; through `handle_pending`, an exit `10` prints the pending JSON and the commands `agent-pwd confirm approve <id>` and `agent-pwd confirm result <id> --token <token>` to stderr, then returns `10`. Other codes are printed and passed through. The script itself does not wait. |
+| `run_and_wait.sh` | `run_and_wait.sh <label|id>` | Runs `agent-pwd env run --cred "$label" -- true`; through `handle_pending`, an exit `10` prints the pending JSON and the commands `agent-pwd confirm approve <id>` and `agent-pwd confirm result <id> --token <token>` to stderr, then returns `10`. Other codes are printed and passed through. The script itself does not wait. |
 | `approve_and_collect.sh` | `approve_and_collect.sh <id> <token>` (arguments: `<confirmation_id> <poll_token>`) | Human-only: runs `agent-pwd confirm approve "$id"` then `agent-pwd confirm result "$id" --token "$token" --wait`, which polls until the decision is made (client deadline about 6 minutes). |
 | `deny.sh` | `deny.sh <confirmation_id>` | Human-only: runs `agent-pwd confirm deny "$id"` to reject the pending action. |
 

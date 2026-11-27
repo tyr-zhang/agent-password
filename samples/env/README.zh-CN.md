@@ -15,8 +15,8 @@ See [English](README.md).
 
 | 文件 | 用法 | 预期行为 |
 |---|---|---|
-| `deploy.sh` | `deploy.sh <envvar-label> [env-name]` | 执行 `agent-pwd env run --cred "$label" -- "$HERE/check_presence.sh" "$name"`；`name` 默认 `DEPLOY_TOKEN`，子进程只报告存在性和长度。 |
-| `nested_process.sh` | `nested_process.sh <envvar-label> [env-name]` | 执行 `agent-pwd env run --cred "$label" -- bash -c '"$0" "$1"' "$HERE/check_presence.sh" "$name"`；孙进程继承注入的变量并报告存在性和长度。 |
+| `deploy.sh` | `deploy.sh <label|id> [env-name]` | 执行 `agent-pwd env run --cred "$label" -- "$HERE/check_presence.sh" "$name"`；`name` 默认 `DEPLOY_TOKEN`，子进程只报告存在性和长度。 |
+| `nested_process.sh` | `nested_process.sh <label|id> [env-name]` | 执行 `agent-pwd env run --cred "$label" -- bash -c '"$0" "$1"' "$HERE/check_presence.sh" "$name"`；孙进程继承注入的变量并报告存在性和长度。 |
 | `check_presence.sh` | `check_presence.sh [name]`（无用法注释；来自 `name="${1:-DEPLOY_TOKEN}"`） | 供两个包装脚本使用的子进程：成功时打印 `<name> is present (length N)`，缺失时向 stderr 打印 `<name> is missing` 并退出 `1`；从不打印值。 |
 
 ## 示例

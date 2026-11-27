@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Fill: issue a one-shot password handle and apply it to a child.
-# Usage: run_password.sh <web-credential-label> [field]
+# Usage: run_password.sh <label|id> [field]
 set -euo pipefail
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$HERE/../common.sh"

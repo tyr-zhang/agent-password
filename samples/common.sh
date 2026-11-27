@@ -5,7 +5,7 @@ set -euo pipefail
 cred_label() {
   local label="${1:-${AGENT_PWD_CRED:-}}"
   if [[ -z "$label" ]]; then
-    echo "usage: $0 <credential-label> [args...]" >&2
+    echo "usage: $0 <label|id> [args...]" >&2
     echo "or set AGENT_PWD_CRED=<label>" >&2
     return 2
   fi

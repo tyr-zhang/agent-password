@@ -17,7 +17,7 @@ See [简体中文](README.zh-CN.md).
 | File | Usage | Expected behavior |
 |---|---|---|
 | `mysql_find_user.sh` | `mysql_find_user.sh <label> <user_id>` | Runs `SELECT id, email, created_at FROM users WHERE id = ?` with `--arg "$user_id"`; a read-only query. |
-| `mysql_report.sh` | `mysql_report.sh <server-credential-label>` | Runs a read-only `information_schema.tables` query ordered by `table_rows DESC LIMIT 20`, returning table names and row estimates. |
+| `mysql_report.sh` | `mysql_report.sh <label|id>` | Runs a read-only `information_schema.tables` query ordered by `table_rows DESC LIMIT 20`, returning table names and row estimates. |
 | `mysql_update.sh` | `mysql_update.sh <label> <user_id> [active]` | Runs `UPDATE users SET active = ? WHERE id = ?` with `--arg "$active" --arg "$user_id"` (`active` defaults to `1`); expects exit `10` and prints the pending JSON plus the `agent-pwd confirm approve` / `agent-pwd confirm result` commands through `handle_pending`. |
 | `postgres_explain.sh` | `postgres_explain.sh <label> <user_id>` | Runs `EXPLAIN SELECT * FROM orders WHERE user_id = $1` with `--arg "$user_id"`; auto-allowed as a read. |
 | `redis_get.sh` | `redis_get.sh <label> <key>` | Runs `GET ${key}` through `agent-pwd sql query`; a read-only Redis command. |

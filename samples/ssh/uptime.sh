@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SSH: basic health check. Usage: uptime.sh <server-credential-label>
+# SSH: basic health check. Usage: uptime.sh <label|id>
 set -euo pipefail
 source "$(dirname "${BASH_SOURCE[0]}")/../common.sh"
 label=$(cred_label "${1:-}")

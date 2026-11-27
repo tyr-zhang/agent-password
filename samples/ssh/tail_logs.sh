@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SSH: tail recent logs. Usage: tail_logs.sh <server-credential-label> [path] [lines]
+# SSH: tail recent logs. Usage: tail_logs.sh <label|id> [path] [lines]
 set -euo pipefail
 source "$(dirname "${BASH_SOURCE[0]}")/../common.sh"
 label=$(cred_label "${1:-}")

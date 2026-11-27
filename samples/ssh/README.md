@@ -15,9 +15,9 @@ See [简体中文](README.zh-CN.md).
 
 | File | Usage | Expected behavior |
 |---|---|---|
-| `uptime.sh` | `uptime.sh <server-credential-label>` | Runs `agent-pwd ssh exec --cred "$label" -- 'uptime'` and prints the redacted JSON result (including `output`, `exit_code`, and `truncated`). |
-| `tail_logs.sh` | `tail_logs.sh <server-credential-label> [path] [lines]` | Runs `tail -n ${lines} ${path}` over SSH; `path` defaults to `/var/log/system.log` and `lines` to `50`. |
-| `docker_ps.sh` | `docker_ps.sh <server-credential-label>` | Runs `docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"` over SSH and prints the redacted result. |
+| `uptime.sh` | `uptime.sh <label|id>` | Runs `agent-pwd ssh exec --cred "$label" -- 'uptime'` and prints the redacted JSON result (including `output`, `exit_code`, and `truncated`). |
+| `tail_logs.sh` | `tail_logs.sh <label|id> [path] [lines]` | Runs `tail -n ${lines} ${path}` over SSH; `path` defaults to `/var/log/system.log` and `lines` to `50`. |
+| `docker_ps.sh` | `docker_ps.sh <label|id>` | Runs `docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"` over SSH and prints the redacted result. |
 
 ## Examples
 

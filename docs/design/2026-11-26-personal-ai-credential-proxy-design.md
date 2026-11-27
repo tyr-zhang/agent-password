@@ -3,6 +3,8 @@
 日期：2026-11-26
 状态：待审阅
 
+> **实现说明**：本文是原始设计快照，保留当时的 `--cred <id>` 写法。当前实现以 **label 为凭据主键**，`--cred`、`cred show` 和 `cred rm` 均接受 `--cred <label|id>`（label 优先，ID 兼容）。请以 [README](../README.zh-CN.md)、[操作手册](../manual.zh-CN.md) 和 [AI 契约](../contract.zh-CN.md) 为准。
+
 ## 1. 背景与目标
 
 构建一个**个人自用**的凭据管理工具。它参考 1Password 的加密存储模型，但定位完全不同：核心消费者不是人，而是**AI 代理**。

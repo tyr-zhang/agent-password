@@ -24,7 +24,7 @@ Before acting, read the machine-readable contract with `agent-pwd docs --format 
 ```bash
 agent-pwd status                  # is the daemon running and unlocked?
 agent-pwd cred list               # metadata only — find the label
-agent-pwd <action> --cred <label> ...
+agent-pwd <action> --cred <label|id> ...
 ```
 
 All action commands emit JSON by default. A successful result is printed directly; failures print `{"ok":false,"error":{"code":N,"message":"..."}}`.

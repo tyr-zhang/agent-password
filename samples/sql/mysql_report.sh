@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# MySQL: read-only table sizes. Usage: mysql_report.sh <server-credential-label>
+# MySQL: read-only table sizes. Usage: mysql_report.sh <label|id>
 set -euo pipefail
 source "$(dirname "${BASH_SOURCE[0]}")/../common.sh"
 label=$(cred_label "${1:-}")

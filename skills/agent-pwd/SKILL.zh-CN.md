@@ -24,7 +24,7 @@ description: 通过 agent-pwd CLI 使用已存储的凭据执行动作（SSH、S
 ```bash
 agent-pwd status                  # daemon 是否运行并已解锁？
 agent-pwd cred list               # 只看元数据，找到 label
-agent-pwd <动作> --cred <label> ...
+agent-pwd <动作> --cred <label|id> ...
 ```
 
 动作命令默认输出 JSON。成功时直接打印结果对象；失败时打印 `{"ok":false,"error":{"code":N,"message":"..."}}`。

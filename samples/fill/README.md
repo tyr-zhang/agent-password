@@ -16,8 +16,8 @@ See [简体中文](README.zh-CN.md).
 
 | File | Usage | Expected behavior |
 |---|---|---|
-| `run_password.sh` | `run_password.sh <web-credential-label> [field]` | Runs `agent-pwd fill --cred "$label" --field "$field"` (`field` defaults to `password`), extracts `handle` with `json_field`, then runs `agent-pwd fill apply --handle "$handle" -- python3 "$HERE/show_length.py"`. |
-| `run_totp.sh` | `run_totp.sh <web-credential-label>` | Runs `agent-pwd fill --cred "$label" --field totp` and applies the handle to `show_length.py`; requires `totp_seed` on the credential. |
+| `run_password.sh` | `run_password.sh <label|id> [field]` | Runs `agent-pwd fill --cred "$label" --field "$field"` (`field` defaults to `password`), extracts `handle` with `json_field`, then runs `agent-pwd fill apply --handle "$handle" -- python3 "$HERE/show_length.py"`. |
+| `run_totp.sh` | `run_totp.sh <label|id>` | Runs `agent-pwd fill --cred "$label" --field totp` and applies the handle to `show_length.py`; requires `totp_seed` on the credential. |
 | `show_length.py` | `python3 show_length.py` (no arguments; launched through `agent-pwd fill apply --handle <h> -- ...`) | Reads `AGENT_PWD_FILL` and one stdin line, then prints `env length:`, `stdin length:`, and `same value:` — never the value itself. |
 
 ## Examples

@@ -59,11 +59,11 @@ agent-pwd cred add server prod-mysql \
 Actions:
 
 ```bash
-agent-pwd ssh exec --cred <id> -- 'uptime'
-agent-pwd sql query --cred <id> -- 'SELECT count(*) FROM users'
-agent-pwd api call --cred <id> --method GET --path /v1/me
-agent-pwd env run --cred <id> -- ./deploy.sh
-agent-pwd fill --cred <id> --field password
+agent-pwd ssh exec --cred <label|id> -- 'uptime'
+agent-pwd sql query --cred <label|id> -- 'SELECT count(*) FROM users'
+agent-pwd api call --cred <label|id> --method GET --path /v1/me
+agent-pwd env run --cred <label|id> -- ./deploy.sh
+agent-pwd fill --cred <label|id> --field password
 agent-pwd fill apply --handle <handle> -- ./browser-automation
 ```
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # API: POST with a JSON body (requires confirmation by default).
-# Usage: create_issue.sh <apikey-label> <owner> <repo> <title>
+# Usage: create_issue.sh <label|id> <owner> <repo> <title>
 set -euo pipefail
 source "$(dirname "${BASH_SOURCE[0]}")/../common.sh"
 label=$(cred_label "${1:-}")

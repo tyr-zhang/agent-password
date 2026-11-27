@@ -15,7 +15,7 @@ See [简体中文](README.zh-CN.md).
 
 | File | Usage | Expected behavior |
 |---|---|---|
-| `run_jenkins.sh` | `run_jenkins.sh <credential-label> <username> [url]` | Issues `agent-pwd fill --cred "$label" --field password`, applies the handle to `jenkins.py`, and prints only the browser page title and URL. `url` defaults to `https://jenkins.example.com/`. |
+| `run_jenkins.sh` | `run_jenkins.sh <label|id> <username> [url]` | Issues `agent-pwd fill --cred "$label" --field password`, applies the handle to `jenkins.py`, and prints only the browser page title and URL. `url` defaults to `https://jenkins.example.com/`. |
 | `run_generic.sh` | `run_generic.sh <label> <username> <url> <user_sel> <pass_sel> [submit_sel]` | Issues a `password` fill handle and applies it to `generic_form.py` with caller-supplied selectors; `submit_sel` defaults to `button[type=submit]`. |
 | `jenkins.py` | `python3 jenkins.py <url> <username> [user_selector] [pass_selector] [submit_selector]` (invoked through `agent-pwd fill apply --handle <h> -- ...`) | Opens Chromium, fills the form via `AGENT_PWD_FILL`, clicks submit, waits for `networkidle`, and prints `title:` and `url:`. Selectors default to `input[name="j_username"]`, `input[name="j_password"]`, and `text=Sign in`; exits `2` if arguments are missing or `AGENT_PWD_FILL` is empty. |
 | `generic_form.py` | `python3 generic_form.py <url> <username> <user_selector> <pass_selector> [submit_selector]` (invoked through `agent-pwd fill apply --handle <h> -- ...`) | Same browser flow with all selectors supplied by the caller; submit selector defaults to `button[type="submit"]`; exits `2` if arguments are missing or `AGENT_PWD_FILL` is empty. |

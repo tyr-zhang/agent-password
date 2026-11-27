@@ -71,7 +71,7 @@ func init() {
 		Summary: "list credential metadata", Run: simpleCall("cred.list"),
 	})
 	register(&Command{
-		Name: "cred show", Group: "Management (human)", Syntax: "agent-pwd cred show <id|label>",
+		Name: "cred show", Group: "Management (human)", Syntax: "agent-pwd cred show <label|id>",
 		Summary: "show metadata only; there is no path that prints a secret",
 		Run: func(c *Context) int {
 			result, e := Call("cred.show", map[string]any{"id": c.Arg(0)})
@@ -79,7 +79,7 @@ func init() {
 		},
 	})
 	register(&Command{
-		Name: "cred rm", Group: "Management (human)", Syntax: "agent-pwd cred rm <id|label>",
+		Name: "cred rm", Group: "Management (human)", Syntax: "agent-pwd cred rm <label|id>",
 		Summary: "delete a credential",
 		Run: func(c *Context) int {
 			result, e := Call("cred.rm", map[string]any{"id": c.Arg(0)})

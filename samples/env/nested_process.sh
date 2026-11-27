@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Env injection: grandchild inherits the injected variable.
-# Usage: nested_process.sh <envvar-label> [env-name]
+# Usage: nested_process.sh <label|id> [env-name]
 set -euo pipefail
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$HERE/../common.sh"

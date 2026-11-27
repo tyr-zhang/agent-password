@@ -16,8 +16,8 @@ See [简体中文](README.zh-CN.md).
 
 | File | Usage | Expected behavior |
 |---|---|---|
-| `get_user.sh` | `get_user.sh <apikey-label>` | Runs `agent-pwd api call --cred "$label" --method GET --path /user`; an auto-allowed authenticated GET. |
-| `create_issue.sh` | `create_issue.sh <apikey-label> <owner> <repo> <title>` | Builds the JSON body with `{"title": ...}`, POSTs to `/repos/${owner}/${repo}/issues`, and expects exit `10`; `handle_pending` prints the pending JSON and the human approval commands. |
+| `get_user.sh` | `get_user.sh <label|id>` | Runs `agent-pwd api call --cred "$label" --method GET --path /user`; an auto-allowed authenticated GET. |
+| `create_issue.sh` | `create_issue.sh <label|id> <owner> <repo> <title>` | Builds the JSON body with `{"title": ...}`, POSTs to `/repos/${owner}/${repo}/issues`, and expects exit `10`; `handle_pending` prints the pending JSON and the human approval commands. |
 | `list_with_header.sh` | `list_with_header.sh <label> <path>` | GETs the given path with `--header 'Accept: application/json'` and `--header 'X-Client: agent-pwd-sample'`; `path` defaults to `/v1/items?page=1&limit=20`. |
 
 ## Examples

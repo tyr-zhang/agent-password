@@ -16,7 +16,7 @@ See [English](README.md).
 
 | 文件 | 用法 | 预期行为 |
 |---|---|---|
-| `run_and_wait.sh` | `run_and_wait.sh <high-risk-credential-label>` | 执行 `agent-pwd env run --cred "$label" -- true`；退出 `10` 时通过 `handle_pending` 向 stderr 打印待确认 JSON 和命令 `agent-pwd confirm approve <id>`、`agent-pwd confirm result <id> --token <token>`，然后返回 `10`。其他退出码会被原样打印和传递。脚本本身不会等待。 |
+| `run_and_wait.sh` | `run_and_wait.sh <label|id>` | 执行 `agent-pwd env run --cred "$label" -- true`；退出 `10` 时通过 `handle_pending` 向 stderr 打印待确认 JSON 和命令 `agent-pwd confirm approve <id>`、`agent-pwd confirm result <id> --token <token>`，然后返回 `10`。其他退出码会被原样打印和传递。脚本本身不会等待。 |
 | `approve_and_collect.sh` | `approve_and_collect.sh <id> <token>`（参数为 `<confirmation_id> <poll_token>`） | 仅供人类使用：执行 `agent-pwd confirm approve "$id"`，然后执行 `agent-pwd confirm result "$id" --token "$token" --wait`，轮询直到做出决定（客户端期限约 6 分钟）。 |
 | `deny.sh` | `deny.sh <confirmation_id>` | 仅供人类使用：执行 `agent-pwd confirm deny "$id"` 拒绝待确认动作。 |
 

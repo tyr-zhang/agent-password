@@ -16,8 +16,8 @@ See [English](README.md).
 
 | 文件 | 用法 | 预期行为 |
 |---|---|---|
-| `run_password.sh` | `run_password.sh <web-credential-label> [field]` | 执行 `agent-pwd fill --cred "$label" --field "$field"`（`field` 默认 `password`），用 `json_field` 取 `handle`，然后执行 `agent-pwd fill apply --handle "$handle" -- python3 "$HERE/show_length.py"`。 |
-| `run_totp.sh` | `run_totp.sh <web-credential-label>` | 执行 `agent-pwd fill --cred "$label" --field totp`，并把 handle 应用到 `show_length.py`；凭据需要 `totp_seed`。 |
+| `run_password.sh` | `run_password.sh <label|id> [field]` | 执行 `agent-pwd fill --cred "$label" --field "$field"`（`field` 默认 `password`），用 `json_field` 取 `handle`，然后执行 `agent-pwd fill apply --handle "$handle" -- python3 "$HERE/show_length.py"`。 |
+| `run_totp.sh` | `run_totp.sh <label|id>` | 执行 `agent-pwd fill --cred "$label" --field totp`，并把 handle 应用到 `show_length.py`；凭据需要 `totp_seed`。 |
 | `show_length.py` | `python3 show_length.py`（无参数；通过 `agent-pwd fill apply --handle <h> -- ...` 启动） | 读取 `AGENT_PWD_FILL` 和一行 stdin，只打印 `env length:`、`stdin length:` 和 `same value:`，从不打印值本身。 |
 
 ## 示例

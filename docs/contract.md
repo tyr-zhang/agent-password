@@ -10,17 +10,17 @@ All action commands emit JSON by default. Secrets never appear in output.
 
 ### Actions (AI)
 
-- `agent-pwd api call --cred <id> --method GET --path /v1/x` — make an HTTP request with the stored token injected by the daemon
+- `agent-pwd api call --cred <label|id> --method GET --path /v1/x` — make an HTTP request with the stored token injected by the daemon
   flags: --cred --method --path --body --header --allow-redirect
-- `agent-pwd env run --cred <id> -- <command...>` — inject an envvar credential into a child process and return redacted output
+- `agent-pwd env run --cred <label|id> -- <command...>` — inject an envvar credential into a child process and return redacted output
   flags: --cred
-- `agent-pwd fill --cred <id> --field password|totp|username|token` — issue a one-shot, expiring handle; never returns the secret itself
+- `agent-pwd fill --cred <label|id> --field password|totp|username|token` — issue a one-shot, expiring handle; never returns the secret itself
   flags: --cred --field
 - `agent-pwd fill apply --handle <h> -- <command...>` — consume a fill handle and inject the value into a child process via stdin/env
   flags: --handle
-- `agent-pwd sql query --cred <id> -- "<SQL>" [--arg v]...` — execute SQL (mysql/postgres) or a read-only redis command
+- `agent-pwd sql query --cred <label|id> -- "<SQL>" [--arg v]...` — execute SQL (mysql/postgres) or a read-only redis command
   flags: --cred --arg
-- `agent-pwd ssh exec --cred <id> -- <command...>` — run a command over SSH using the stored credential, return redacted stdout
+- `agent-pwd ssh exec --cred <label|id> -- <command...>` — run a command over SSH using the stored credential, return redacted stdout
   flags: --cred --insecure-host-key
 
 ### Confirmation
@@ -41,8 +41,8 @@ All action commands emit JSON by default. Secrets never appear in output.
 - `agent-pwd cred list` — list credential metadata
 - `agent-pwd cred restore --from <backup>` — restore a vault backup after explicit human verification
   flags: --from
-- `agent-pwd cred rm <id|label>` — delete a credential
-- `agent-pwd cred show <id|label>` — show metadata only; there is no path that prints a secret
+- `agent-pwd cred rm <label|id>` — delete a credential
+- `agent-pwd cred show <label|id>` — show metadata only; there is no path that prints a secret
 - `agent-pwd docs [--format md|json]` — print the AI integration contract generated from this command registry
   flags: --format
 - `agent-pwd doctor` — check permissions, backups, audit chain, daemon and platform hardening

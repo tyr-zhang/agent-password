@@ -305,11 +305,11 @@ agent-pwd policy rm allow-one-sql
 
 ## 6. 动作
 
-所有动作命令都接受 `--cred <label-or-id>`，默认输出 JSON，返回脱敏结果。请用 `--` 分隔 CLI 选项与远程命令或 SQL 文本。动作执行超时为 30 秒；输出上限 1 MiB（截断时 `truncated: true`），SQL 结果上限 1000 行。
+所有动作命令都接受 `--cred <label|id>`，默认输出 JSON，返回脱敏结果。请用 `--` 分隔 CLI 选项与远程命令或 SQL 文本。动作执行超时为 30 秒；输出上限 1 MiB（截断时 `truncated: true`），SQL 结果上限 1000 行。
 
 ### SSH 执行
 
-`agent-pwd ssh exec --cred <id> -- <command...>` 需要 `protocol=ssh` 的 `server` 凭据、密码和/或密钥，并且默认要求数据目录中有 `known_hosts`。默认端口 22。密码、私钥与口令永远不会出现在结果中。
+`agent-pwd ssh exec --cred <label|id> -- <command...>` 需要 `protocol=ssh` 的 `server` 凭据、密码和/或密钥，并且默认要求数据目录中有 `known_hosts`。默认端口 22。密码、私钥与口令永远不会出现在结果中。
 
 ```bash
 agent-pwd ssh exec --cred bastion -- 'uptime'
@@ -321,7 +321,7 @@ agent-pwd ssh exec --cred bastion --insecure-host-key -- 'uname -a'   # 仅用�
 
 ### SQL：MySQL、PostgreSQL、Redis
 
-`agent-pwd sql query --cred <id> -- "<SQL>" [--arg v]...` 适用于使用 `mysql`、`postgres` 或 `redis` 的 `server` 凭据。`--arg` 将值绑定为查询参数（多个值请重复该标志），而不是拼接进 SQL 文本。
+`agent-pwd sql query --cred <label|id> -- "<SQL>" [--arg v]...` 适用于使用 `mysql`、`postgres` 或 `redis` 的 `server` 凭据。`--arg` 将值绑定为查询参数（多个值请重复该标志），而不是拼接进 SQL 文本。
 
 ```bash
 # MySQL：默认被 default-sql-read 放行
@@ -350,7 +350,7 @@ agent-pwd sql query --cred cache -- 'HGETALL user:42'
 
 ### HTTP API 调用
 
-`agent-pwd api call --cred <apikey-label> --method GET --path /v1/x` 需要 `apikey` 凭据。daemon 把 `token` 注入配置的 `header_name`（默认 `Authorization`）；调用方不接触 token。默认方法为 `GET`。
+`agent-pwd api call --cred <label|id> --method GET --path /v1/x` 需要 `apikey` 凭据。daemon 把 `token` 注入配置的 `header_name`（默认 `Authorization`）；调用方不接触 token。默认方法为 `GET`。
 
 ```bash
 agent-pwd api call --cred github --method GET --path /user
@@ -369,7 +369,7 @@ agent-pwd api call --cred github --method GET --path /orgs/x/repos --allow-redir
 
 ### 环境变量注入
 
-`agent-pwd env run --cred <envvar-label> -- <command...>` 在子进程中只注入一个环境变量（`key=value`），返回脱敏后的合并输出及 `exit_code`。
+`agent-pwd env run --cred <label|id> -- <command...>` 在子进程中只注入一个环境变量（`key=value`），返回脱敏后的合并输出及 `exit_code`。
 
 ```bash
 agent-pwd env run --cred deploy-token -- ./deploy.sh
@@ -548,13 +548,13 @@ agent-pwd docs --format json
 | 启动 daemon | `agent-pwd daemon --foreground` 或 `agent-pwd daemon` |
 | 初始化 / 解锁 / 锁定 / 查看 | `agent-pwd init` / `agent-pwd unlock` / `agent-pwd lock` / `agent-pwd status` |
 | 添加凭据 | `agent-pwd cred add <web|apikey|server|envvar> <label> [--secret JSON] [--risk normal|high] [--tags a,b] [--port N]` |
-| 列表 / 查看 / 删除 / 恢复 | `agent-pwd cred list` / `agent-pwd cred show <label-or-id>` / `agent-pwd cred rm <label-or-id>` / `agent-pwd cred restore --from <backup>` |
+| 列表 / 查看 / 删除 / 恢复 | `agent-pwd cred list` / `agent-pwd cred show <label|id>` / `agent-pwd cred rm <label|id>` / `agent-pwd cred restore --from <backup>` |
 | 策略 | `agent-pwd policy add --cred-pattern '<glob>' --action '<glob>' --decision allow|confirm|deny [--condition ...] [--id ...]`；`agent-pwd policy list`；`agent-pwd policy rm <id>` |
-| SSH | `agent-pwd ssh exec --cred <label> -- '<command>' [--insecure-host-key]` |
-| SQL / Redis | `agent-pwd sql query --cred <label> -- '<SQL 或命令>' [--arg v]...` |
-| HTTP API | `agent-pwd api call --cred <label> --method GET --path /v1/x [--header k:v] [--body ...] [--allow-redirect]` |
-| 环境变量注入 | `agent-pwd env run --cred <label> -- <command...>` |
-| fill / apply | `agent-pwd fill --cred <label> --field password|totp|username|token`；`agent-pwd fill apply --handle <h> -- <command...>` |
+| SSH | `agent-pwd ssh exec --cred <label|id> -- '<command>' [--insecure-host-key]` |
+| SQL / Redis | `agent-pwd sql query --cred <label|id> -- '<SQL 或命令>' [--arg v]...` |
+| HTTP API | `agent-pwd api call --cred <label|id> --method GET --path /v1/x [--header k:v] [--body ...] [--allow-redirect]` |
+| 环境变量注入 | `agent-pwd env run --cred <label|id> -- <command...>` |
+| fill / apply | `agent-pwd fill --cred <label|id> --field password|totp|username|token`；`agent-pwd fill apply --handle <h> -- <command...>` |
 | 确认 | `agent-pwd confirm approve <id> [--no-biometric]` / `agent-pwd confirm deny <id>` / `agent-pwd confirm result <id> --token <poll_token> [--wait]` |
 | 审计 / 健康 | `agent-pwd audit tail [--n 50]` / `agent-pwd audit verify` / `agent-pwd doctor` |
 | 修改主密码 | `agent-pwd rotate-password [--new-salt]` |

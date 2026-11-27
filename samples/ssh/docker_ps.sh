@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SSH: inspect Docker containers. Usage: docker_ps.sh <server-credential-label>
+# SSH: inspect Docker containers. Usage: docker_ps.sh <label|id>
 set -euo pipefail
 source "$(dirname "${BASH_SOURCE[0]}")/../common.sh"
 label=$(cred_label "${1:-}")

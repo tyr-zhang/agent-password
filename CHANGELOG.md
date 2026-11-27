@@ -18,6 +18,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Credential reference resolution checks labels before IDs, so a label that collides with another credential's ID resolves deterministically to the label.
 - `server` port is canonical in `secret.port`; `--port` remains a compatibility alias that overrides it.
 - Session idle timeout defaults to 8 hours (hard cap 24 hours), configurable with `AGENT_PWD_*_TIMEOUT` environment variables at daemon startup.
+- Documentation and generated contracts consistently use `--cred <label|id>`; the archived design snapshot carries an implementation note instead of being rewritten.
 
 ## [1.0.0]
 

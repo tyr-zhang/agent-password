@@ -16,8 +16,8 @@ See [English](README.md).
 
 | 文件 | 用法 | 预期行为 |
 |---|---|---|
-| `get_user.sh` | `get_user.sh <apikey-label>` | 执行 `agent-pwd api call --cred "$label" --method GET --path /user`；自动放行的带认证 GET。 |
-| `create_issue.sh` | `create_issue.sh <apikey-label> <owner> <repo> <title>` | 用 `{"title": ...}` 构造 JSON body，向 `/repos/${owner}/${repo}/issues` 发起 POST，预期退出 `10`；`handle_pending` 打印待确认 JSON 和人类批准命令。 |
+| `get_user.sh` | `get_user.sh <label|id>` | 执行 `agent-pwd api call --cred "$label" --method GET --path /user`；自动放行的带认证 GET。 |
+| `create_issue.sh` | `create_issue.sh <label|id> <owner> <repo> <title>` | 用 `{"title": ...}` 构造 JSON body，向 `/repos/${owner}/${repo}/issues` 发起 POST，预期退出 `10`；`handle_pending` 打印待确认 JSON 和人类批准命令。 |
 | `list_with_header.sh` | `list_with_header.sh <label> <path>` | 带 `--header 'Accept: application/json'` 和 `--header 'X-Client: agent-pwd-sample'` GET 指定 path；`path` 默认 `/v1/items?page=1&limit=20`。 |
 
 ## 示例

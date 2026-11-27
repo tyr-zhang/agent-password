@@ -305,11 +305,11 @@ Notes:
 
 ## 6. Actions
 
-All action commands take `--cred <label-or-id>`, print JSON by default, and return redacted results. Use `--` to separate CLI options from the remote command or SQL text. Actions have a 30-second execution timeout; output is capped at 1 MiB (`truncated: true` when cut), and SQL results are capped at 1000 rows.
+All action commands take `--cred <label|id>`, print JSON by default, and return redacted results. Use `--` to separate CLI options from the remote command or SQL text. Actions have a 30-second execution timeout; output is capped at 1 MiB (`truncated: true` when cut), and SQL results are capped at 1000 rows.
 
 ### SSH execution
 
-`agent-pwd ssh exec --cred <id> -- <command...>` requires a `server` credential with `protocol=ssh`, a password and/or key, and by default a `known_hosts` file in the data directory. The default port is 22. Password, private key, and passphrase never appear in the result.
+`agent-pwd ssh exec --cred <label|id> -- <command...>` requires a `server` credential with `protocol=ssh`, a password and/or key, and by default a `known_hosts` file in the data directory. The default port is 22. Password, private key, and passphrase never appear in the result.
 
 ```bash
 agent-pwd ssh exec --cred bastion -- 'uptime'
@@ -321,7 +321,7 @@ Host keys: strict `known_hosts` verification is the default. If the file does no
 
 ### SQL: MySQL, PostgreSQL, Redis
 
-`agent-pwd sql query --cred <id> -- "<SQL>" [--arg v]...` works with `server` credentials using `mysql`, `postgres`, or `redis`. `--arg` binds values as query parameters (repeat the flag for multiple values) instead of interpolating them into SQL text.
+`agent-pwd sql query --cred <label|id> -- "<SQL>" [--arg v]...` works with `server` credentials using `mysql`, `postgres`, or `redis`. `--arg` binds values as query parameters (repeat the flag for multiple values) instead of interpolating them into SQL text.
 
 ```bash
 # MySQL: default read allowed by default-sql-read
@@ -350,7 +350,7 @@ Rules for the read path:
 
 ### HTTP API calls
 
-`agent-pwd api call --cred <apikey-label> --method GET --path /v1/x` requires an `apikey` credential. The daemon injects `token` into the configured `header_name` (default `Authorization`); the caller never handles the token. The default method is `GET`.
+`agent-pwd api call --cred <label|id> --method GET --path /v1/x` requires an `apikey` credential. The daemon injects `token` into the configured `header_name` (default `Authorization`); the caller never handles the token. The default method is `GET`.
 
 ```bash
 agent-pwd api call --cred github --method GET --path /user
@@ -369,7 +369,7 @@ agent-pwd api call --cred github --method GET --path /orgs/x/repos --allow-redir
 
 ### Environment variable injection
 
-`agent-pwd env run --cred <envvar-label> -- <command...>` sets exactly one environment variable (`key=value`) in a child process and returns redacted combined output with `exit_code`.
+`agent-pwd env run --cred <label|id> -- <command...>` sets exactly one environment variable (`key=value`) in a child process and returns redacted combined output with `exit_code`.
 
 ```bash
 agent-pwd env run --cred deploy-token -- ./deploy.sh
@@ -548,13 +548,13 @@ Second confirmation is anti-injection, not anti-intrusion: it prevents a misled 
 | Start daemon | `agent-pwd daemon --foreground` or `agent-pwd daemon` |
 | Initialize / unlock / lock / inspect | `agent-pwd init` / `agent-pwd unlock` / `agent-pwd lock` / `agent-pwd status` |
 | Add credentials | `agent-pwd cred add <web|apikey|server|envvar> <label> [--secret JSON] [--risk normal|high] [--tags a,b] [--port N]` |
-| List / show / remove / restore | `agent-pwd cred list` / `agent-pwd cred show <label-or-id>` / `agent-pwd cred rm <label-or-id>` / `agent-pwd cred restore --from <backup>` |
+| List / show / remove / restore | `agent-pwd cred list` / `agent-pwd cred show <label|id>` / `agent-pwd cred rm <label|id>` / `agent-pwd cred restore --from <backup>` |
 | Policy | `agent-pwd policy add --cred-pattern '<glob>' --action '<glob>' --decision allow|confirm|deny [--condition ...] [--id ...]`; `agent-pwd policy list`; `agent-pwd policy rm <id>` |
-| SSH | `agent-pwd ssh exec --cred <label> -- '<command>' [--insecure-host-key]` |
-| SQL / Redis | `agent-pwd sql query --cred <label> -- '<SQL or command>' [--arg v]...` |
-| HTTP API | `agent-pwd api call --cred <label> --method GET --path /v1/x [--header k:v] [--body ...] [--allow-redirect]` |
-| Environment injection | `agent-pwd env run --cred <label> -- <command...>` |
-| Fill / apply | `agent-pwd fill --cred <label> --field password|totp|username|token`; `agent-pwd fill apply --handle <h> -- <command...>` |
+| SSH | `agent-pwd ssh exec --cred <label|id> -- '<command>' [--insecure-host-key]` |
+| SQL / Redis | `agent-pwd sql query --cred <label|id> -- '<SQL or command>' [--arg v]...` |
+| HTTP API | `agent-pwd api call --cred <label|id> --method GET --path /v1/x [--header k:v] [--body ...] [--allow-redirect]` |
+| Environment injection | `agent-pwd env run --cred <label|id> -- <command...>` |
+| Fill / apply | `agent-pwd fill --cred <label|id> --field password|totp|username|token`; `agent-pwd fill apply --handle <h> -- <command...>` |
 | Confirm | `agent-pwd confirm approve <id> [--no-biometric]` / `agent-pwd confirm deny <id>` / `agent-pwd confirm result <id> --token <poll_token> [--wait]` |
 | Audit / health | `agent-pwd audit tail [--n 50]` / `agent-pwd audit verify` / `agent-pwd doctor` |
 | Change master password | `agent-pwd rotate-password [--new-salt]` |

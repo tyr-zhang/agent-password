@@ -15,7 +15,7 @@ See [English](README.md).
 
 | 文件 | 用法 | 预期行为 |
 |---|---|---|
-| `run_jenkins.sh` | `run_jenkins.sh <credential-label> <username> [url]` | 执行 `agent-pwd fill --cred "$label" --field password`，把 handle 应用到 `jenkins.py`，只打印浏览器页面标题和 URL。`url` 默认 `https://jenkins.example.com/`。 |
+| `run_jenkins.sh` | `run_jenkins.sh <label|id> <username> [url]` | 执行 `agent-pwd fill --cred "$label" --field password`，把 handle 应用到 `jenkins.py`，只打印浏览器页面标题和 URL。`url` 默认 `https://jenkins.example.com/`。 |
 | `run_generic.sh` | `run_generic.sh <label> <username> <url> <user_sel> <pass_sel> [submit_sel]` | 申请 `password` fill handle，用调用方提供的选择器应用到 `generic_form.py`；`submit_sel` 默认 `button[type=submit]`。 |
 | `jenkins.py` | `python3 jenkins.py <url> <username> [user_selector] [pass_selector] [submit_selector]`（通过 `agent-pwd fill apply --handle <h> -- ...` 调用） | 打开 Chromium，通过 `AGENT_PWD_FILL` 填写表单并点击提交，等待 `networkidle`，打印 `title:` 和 `url:`。选择器默认 `input[name="j_username"]`、`input[name="j_password"]`、`text=Sign in`；参数不足或 `AGENT_PWD_FILL` 为空时退出 `2`。 |
 | `generic_form.py` | `python3 generic_form.py <url> <username> <user_selector> <pass_selector> [submit_selector]`（通过 `agent-pwd fill apply --handle <h> -- ...` 调用） | 使用调用方提供的选择器执行同样的浏览器流程；提交选择器默认 `button[type="submit"]`；参数不足或 `AGENT_PWD_FILL` 为空时退出 `2`。 |

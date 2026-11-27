@@ -14,9 +14,9 @@ import (
 
 func init() {
 	register(&Command{
-		Name: "ssh exec", Group: "Actions (AI)", Syntax: "agent-pwd ssh exec --cred <id> -- <command...>",
+		Name: "ssh exec", Group: "Actions (AI)", Syntax: "agent-pwd ssh exec --cred <label|id> -- <command...>",
 		Summary: "run a command over SSH using the stored credential, return redacted stdout",
-		Flags: []Flag{{Name: "cred", Summary: "credential id or label"},
+		Flags: []Flag{{Name: "cred", Summary: "credential label or id"},
 			{Name: "insecure-host-key", Bool: true, Summary: "allow unknown host keys (use only for tests)"}},
 		Doc: []string{"Passwords/private keys are never returned. Strict known_hosts verification is the default."},
 		Run: func(c *Context) int {
@@ -29,9 +29,9 @@ func init() {
 		},
 	})
 	register(&Command{
-		Name: "sql query", Group: "Actions (AI)", Syntax: `agent-pwd sql query --cred <id> -- "<SQL>" [--arg v]...`,
+		Name: "sql query", Group: "Actions (AI)", Syntax: `agent-pwd sql query --cred <label|id> -- "<SQL>" [--arg v]...`,
 		Summary: "execute SQL (mysql/postgres) or a read-only redis command",
-		Flags:   []Flag{{Name: "cred", Summary: "credential id or label"}, {Name: "arg", Summary: "bind parameter (repeatable)"}},
+		Flags:   []Flag{{Name: "cred", Summary: "credential label or id"}, {Name: "arg", Summary: "bind parameter (repeatable)"}},
 		Doc:     []string{"SELECT/SHOW/DESCRIBE/EXPLAIN are auto-allowed; writes require confirmation."},
 		Run: func(c *Context) int {
 			result, e := Call("action.sql", map[string]any{
@@ -41,9 +41,9 @@ func init() {
 		},
 	})
 	register(&Command{
-		Name: "api call", Group: "Actions (AI)", Syntax: "agent-pwd api call --cred <id> --method GET --path /v1/x",
+		Name: "api call", Group: "Actions (AI)", Syntax: "agent-pwd api call --cred <label|id> --method GET --path /v1/x",
 		Summary: "make an HTTP request with the stored token injected by the daemon",
-		Flags: []Flag{{Name: "cred", Summary: "apikey credential id or label"},
+		Flags: []Flag{{Name: "cred", Summary: "apikey credential label or id"},
 			{Name: "method", Summary: "HTTP method", Default: "GET"},
 			{Name: "path", Summary: "absolute path appended to base_url"},
 			{Name: "body", Summary: "request body"},
@@ -67,9 +67,9 @@ func init() {
 		},
 	})
 	register(&Command{
-		Name: "env run", Group: "Actions (AI)", Syntax: "agent-pwd env run --cred <id> -- <command...>",
+		Name: "env run", Group: "Actions (AI)", Syntax: "agent-pwd env run --cred <label|id> -- <command...>",
 		Summary: "inject an envvar credential into a child process and return redacted output",
-		Flags:   []Flag{{Name: "cred", Summary: "envvar credential id or label"}},
+		Flags:   []Flag{{Name: "cred", Summary: "envvar credential label or id"}},
 		Run: func(c *Context) int {
 			result, e := Call("action.env", map[string]any{
 				"cred": c.String("cred", ""), "argv": c.ArgsFrom(0),
@@ -78,9 +78,9 @@ func init() {
 		},
 	})
 	register(&Command{
-		Name: "fill", Group: "Actions (AI)", Syntax: "agent-pwd fill --cred <id> --field password|totp|username|token",
+		Name: "fill", Group: "Actions (AI)", Syntax: "agent-pwd fill --cred <label|id> --field password|totp|username|token",
 		Summary: "issue a one-shot, expiring handle; never returns the secret itself",
-		Flags:   []Flag{{Name: "cred", Summary: "credential id or label"},
+		Flags:   []Flag{{Name: "cred", Summary: "credential label or id"},
 			{Name: "field", Summary: "field to inject", Default: "password"}},
 		Doc: []string{"Consume with `fill apply --handle <handle> -- <command>`. The handle expires in 60 seconds."},
 		Run: func(c *Context) int {

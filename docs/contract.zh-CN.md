@@ -10,17 +10,17 @@
 
 ### 操作（AI）
 
-- `agent-pwd api call --cred <id> --method GET --path /v1/x` — 发起 HTTP 请求，由 daemon 注入已存储的 token
+- `agent-pwd api call --cred <label|id> --method GET --path /v1/x` — 发起 HTTP 请求，由 daemon 注入已存储的 token
   flags: --cred --method --path --body --header --allow-redirect
-- `agent-pwd env run --cred <id> -- <command...>` — 将 envvar 凭据注入子进程并返回脱敏后的输出
+- `agent-pwd env run --cred <label|id> -- <command...>` — 将 envvar 凭据注入子进程并返回脱敏后的输出
   flags: --cred
-- `agent-pwd fill --cred <id> --field password|totp|username|token` — 签发一次性、会过期的 handle；绝不返回密钥本身
+- `agent-pwd fill --cred <label|id> --field password|totp|username|token` — 签发一次性、会过期的 handle；绝不返回密钥本身
   flags: --cred --field
 - `agent-pwd fill apply --handle <h> -- <command...>` — 消费 fill handle，并通过 stdin/env 将值注入子进程
   flags: --handle
-- `agent-pwd sql query --cred <id> -- "<SQL>" [--arg v]...` — 执行 SQL（mysql/postgres）或只读 redis 命令
+- `agent-pwd sql query --cred <label|id> -- "<SQL>" [--arg v]...` — 执行 SQL（mysql/postgres）或只读 redis 命令
   flags: --cred --arg
-- `agent-pwd ssh exec --cred <id> -- <command...>` — 使用已存储的凭据通过 SSH 执行命令，并返回脱敏后的 stdout
+- `agent-pwd ssh exec --cred <label|id> -- <command...>` — 使用已存储的凭据通过 SSH 执行命令，并返回脱敏后的 stdout
   flags: --cred --insecure-host-key
 
 ### 确认
@@ -41,8 +41,8 @@
 - `agent-pwd cred list` — 列出凭据元数据
 - `agent-pwd cred restore --from <backup>` — 经过明确的人工验证后恢复 vault 备份
   flags: --from
-- `agent-pwd cred rm <id|label>` — 删除凭据
-- `agent-pwd cred show <id|label>` — 仅显示元数据；没有任何路径会打印密钥
+- `agent-pwd cred rm <label|id>` — 删除凭据
+- `agent-pwd cred show <label|id>` — 仅显示元数据；没有任何路径会打印密钥
 - `agent-pwd docs [--format md|json]` — 打印由命令注册表生成的 AI 集成契约
   flags: --format
 - `agent-pwd doctor` — 检查权限、备份、审计链、daemon 和平台加固

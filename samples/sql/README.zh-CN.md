@@ -17,7 +17,7 @@ See [English](README.md).
 | 文件 | 用法 | 预期行为 |
 |---|---|---|
 | `mysql_find_user.sh` | `mysql_find_user.sh <label> <user_id>` | 执行 `SELECT id, email, created_at FROM users WHERE id = ?`，使用 `--arg "$user_id"`；只读查询。 |
-| `mysql_report.sh` | `mysql_report.sh <server-credential-label>` | 执行只读的 `information_schema.tables` 查询，按 `table_rows DESC LIMIT 20` 排序，返回表名和行数估算。 |
+| `mysql_report.sh` | `mysql_report.sh <label|id>` | 执行只读的 `information_schema.tables` 查询，按 `table_rows DESC LIMIT 20` 排序，返回表名和行数估算。 |
 | `mysql_update.sh` | `mysql_update.sh <label> <user_id> [active]` | 执行 `UPDATE users SET active = ? WHERE id = ?`，使用 `--arg "$active" --arg "$user_id"`（`active` 默认 `1`）；预期退出 `10`，并通过 `handle_pending` 打印待确认 JSON 及 `agent-pwd confirm approve` / `agent-pwd confirm result` 命令。 |
 | `postgres_explain.sh` | `postgres_explain.sh <label> <user_id>` | 执行 `EXPLAIN SELECT * FROM orders WHERE user_id = $1`，使用 `--arg "$user_id"`；作为只读操作自动放行。 |
 | `redis_get.sh` | `redis_get.sh <label> <key>` | 通过 `agent-pwd sql query` 执行 `GET ${key}`；属于 Redis 只读命令。 |

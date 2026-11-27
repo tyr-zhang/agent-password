@@ -15,9 +15,9 @@ See [English](README.md).
 
 | 文件 | 用法 | 预期行为 |
 |---|---|---|
-| `uptime.sh` | `uptime.sh <server-credential-label>` | 执行 `agent-pwd ssh exec --cred "$label" -- 'uptime'`，打印脱敏后的 JSON 结果（含 `output`、`exit_code`、`truncated`）。 |
-| `tail_logs.sh` | `tail_logs.sh <server-credential-label> [path] [lines]` | 通过 SSH 执行 `tail -n ${lines} ${path}`；`path` 默认 `/var/log/system.log`，`lines` 默认 `50`。 |
-| `docker_ps.sh` | `docker_ps.sh <server-credential-label>` | 通过 SSH 执行 `docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"`，打印脱敏结果。 |
+| `uptime.sh` | `uptime.sh <label|id>` | 执行 `agent-pwd ssh exec --cred "$label" -- 'uptime'`，打印脱敏后的 JSON 结果（含 `output`、`exit_code`、`truncated`）。 |
+| `tail_logs.sh` | `tail_logs.sh <label|id> [path] [lines]` | 通过 SSH 执行 `tail -n ${lines} ${path}`；`path` 默认 `/var/log/system.log`，`lines` 默认 `50`。 |
+| `docker_ps.sh` | `docker_ps.sh <label|id>` | 通过 SSH 执行 `docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"`，打印脱敏结果。 |
 
 ## 示例
 

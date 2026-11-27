@@ -15,8 +15,8 @@ See [简体中文](README.zh-CN.md).
 
 | File | Usage | Expected behavior |
 |---|---|---|
-| `deploy.sh` | `deploy.sh <envvar-label> [env-name]` | Runs `agent-pwd env run --cred "$label" -- "$HERE/check_presence.sh" "$name"`; `name` defaults to `DEPLOY_TOKEN`, and the child reports presence and length only. |
-| `nested_process.sh` | `nested_process.sh <envvar-label> [env-name]` | Runs `agent-pwd env run --cred "$label" -- bash -c '"$0" "$1"' "$HERE/check_presence.sh" "$name"`; the grandchild inherits the injected variable and reports presence and length. |
+| `deploy.sh` | `deploy.sh <label|id> [env-name]` | Runs `agent-pwd env run --cred "$label" -- "$HERE/check_presence.sh" "$name"`; `name` defaults to `DEPLOY_TOKEN`, and the child reports presence and length only. |
+| `nested_process.sh` | `nested_process.sh <label|id> [env-name]` | Runs `agent-pwd env run --cred "$label" -- bash -c '"$0" "$1"' "$HERE/check_presence.sh" "$name"`; the grandchild inherits the injected variable and reports presence and length. |
 | `check_presence.sh` | `check_presence.sh [name]` (no usage comment; from `name="${1:-DEPLOY_TOKEN}"`) | Child process used by the two wrappers: prints `<name> is present (length N)` on success, or `<name> is missing` to stderr with exit `1`; never prints the value. |
 
 ## Examples
