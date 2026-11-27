@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Report a security vulnerability privately
+    url: https://github.com/tyr-zhang/agent-password/security/advisories/new
+    about: Report security vulnerabilities through GitHub Security Advisories, not public issues. See SECURITY.md for our disclosure policy.
+  - name: Security policy (SECURITY.md)
+    url: https://github.com/tyr-zhang/agent-password/blob/main/SECURITY.md
+    about: Read the supported versions and responsible disclosure guidance in SECURITY.md before reporting a vulnerability.
+  - name: Documentation
+    url: https://github.com/tyr-zhang/agent-password/tree/main/docs
+    about: Check the generated CLI contract and design documents before opening an issue.

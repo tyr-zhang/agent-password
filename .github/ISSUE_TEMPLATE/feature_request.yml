@@ -1,0 +1,61 @@
+name: Feature request
+description: Suggest a new capability or improvement for agent-pwd
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the suggestion. Please keep the trust model in mind: the CLI exposes
+        actions to AI agents, not plaintext credentials.
+
+        **Security vulnerabilities must be reported privately** through
+        [GitHub Security Advisories](https://github.com/tyr-zhang/agent-password/security/advisories/new),
+        not in a public issue. See [SECURITY.md](https://github.com/tyr-zhang/agent-password/blob/main/SECURITY.md).
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What are you trying to do, and what is missing today?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: Describe the CLI action, flag, policy, or behavior you would like to see.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Any workarounds or other approaches you considered.
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      description: Which part of the project does this affect?
+      options:
+        - CLI actions
+        - Executors (ssh, sql, api, env, fill)
+        - Policy and confirmation
+        - Storage and audit
+        - Platform integration
+        - Internationalization
+        - Documentation
+        - Other
+      multiple: false
+    validations:
+      required: true
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checklist
+      options:
+        - label: I searched existing issues and discussions for a similar request.
+          required: true
+        - label: This request does not require exposing plaintext secrets to AI agents.
+          required: true
+        - label: I understand that new CLI actions require regenerating the docs contract.
+          required: false
