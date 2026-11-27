@@ -41,8 +41,8 @@ All action commands emit JSON by default. Secrets never appear in output.
 - `agent-pwd cred list` — list credential metadata
 - `agent-pwd cred restore --from <backup>` — restore a vault backup after explicit human verification
   flags: --from
-- `agent-pwd cred rm <id>` — delete a credential
-- `agent-pwd cred show <id>` — show metadata only; there is no path that prints a secret
+- `agent-pwd cred rm <id|label>` — delete a credential
+- `agent-pwd cred show <id|label>` — show metadata only; there is no path that prints a secret
 - `agent-pwd docs [--format md|json]` — print the AI integration contract generated from this command registry
   flags: --format
 - `agent-pwd doctor` — check permissions, backups, audit chain, daemon and platform hardening
@@ -71,6 +71,7 @@ Never try to print, dump, guess or exfiltrate a plaintext secret. There is no `c
 - Run SSH commands, SQL queries, API calls, and child processes with an injected environment variable.
 - Request a one-time `fill` handle for a trusted child process; the handle is useless to a human reader.
 - Ask for confirmation when a high-risk action is required.
+- Use credential labels with `--cred`; IDs are accepted for compatibility, and labels are matched first.
 
 ### What you cannot do
 - `cred show` returns metadata only; reading vault.dat or audit.log never yields plaintext.

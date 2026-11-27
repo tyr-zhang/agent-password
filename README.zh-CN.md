@@ -41,10 +41,19 @@ agent-pwd status
 ```bash
 agent-pwd cred add web github
 agent-pwd cred add apikey openai
-agent-pwd cred add server prod-mysql --port 3306
+agent-pwd cred add server prod-mysql          # 端口与其他字段一样交互输入
 agent-pwd cred add envvar deploy-token
 agent-pwd cred list
-agent-pwd cred show <id>           # 仅元数据，不存在输出 secret 的路径
+agent-pwd cred show <label|id>     # 仅元数据，不存在输出 secret 的路径
+```
+
+凭据 **label 是主标识**：再次添加同名 label 会覆盖该凭据，并保留其 ID 和 `created_at`。所有引用凭据的地方（`--cred`、`cred show`、`cred rm`）都可以使用 label 或旧版 `cred_...` ID；如果某个 label 恰好等于另一个凭据的 ID，**label 优先**。
+
+自动化场景下，把所有服务器字段（包括 `port`）放进 `--secret`；`--port` 仅作为兼容别名保留：
+
+```bash
+agent-pwd cred add server prod-mysql \
+  --secret '{"protocol":"mysql","host":"127.0.0.1","port":3306,"server_user":"app","password":"<密码>","database":"appdb"}'
 ```
 
 动作命令：
@@ -74,6 +83,8 @@ agent-pwd docs > ~/.claude/agent-pwd-contract.md
 ```
 
 把生成的契约嵌入 `CLAUDE.md` 或技能说明。契约包含能力边界、JSON schema、退出码和确认流程，并明确声明 AI 不能读取密码。
+
+仓库自带可直接使用的人工技能：[`skills/agent-pwd/SKILL.zh-CN.md`](skills/agent-pwd/SKILL.zh-CN.md)；完整操作手册见 [`docs/manual.zh-CN.md`](docs/manual.zh-CN.md)。每种场景的可运行示例在 [`samples/`](samples/README.zh-CN.md)：网页登录、SSH、SQL、API、环境变量注入、fill、确认流程和运维。
 
 ## 多语言
 

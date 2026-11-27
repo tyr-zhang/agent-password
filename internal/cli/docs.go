@@ -20,7 +20,8 @@ Never try to print, dump, guess or exfiltrate a plaintext secret. There is no ` 
 	contractCan = `### What you can do
 - Run SSH commands, SQL queries, API calls, and child processes with an injected environment variable.
 - Request a one-time ` + "`fill`" + ` handle for a trusted child process; the handle is useless to a human reader.
-- Ask for confirmation when a high-risk action is required.`
+- Ask for confirmation when a high-risk action is required.
+- Use credential labels with ` + "`--cred`" + `; IDs are accepted for compatibility, and labels are matched first.`
 
 	contractCannot = `### What you cannot do
 - ` + "`cred show`" + ` returns metadata only; reading vault.dat or audit.log never yields plaintext.

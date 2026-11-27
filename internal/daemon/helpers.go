@@ -133,11 +133,9 @@ func (d *Daemon) handleAdmin(req protocol.Request) protocol.Response {
 		if err != nil {
 			return protocol.Fail(protocol.CodeInternal, err.Error())
 		}
-		id := argString(req.Args, "id")
-		for i := range body.Credentials {
-			if body.Credentials[i].ID == id {
-				return protocol.OK(map[string]any{"credential": store.Public(&body.Credentials[i])})
-			}
+		ref := argString(req.Args, "id")
+		if idx := findCredentialIndex(body, ref); idx >= 0 {
+			return protocol.OK(map[string]any{"credential": store.Public(&body.Credentials[idx])})
 		}
 		return protocol.Fail(protocol.CodeNotFound, "credential not found")
 	case "cred.rm":
@@ -145,14 +143,8 @@ func (d *Daemon) handleAdmin(req protocol.Request) protocol.Response {
 		if err != nil {
 			return protocol.Fail(protocol.CodeInternal, err.Error())
 		}
-		id := argString(req.Args, "id")
-		idx := -1
-		for i := range body.Credentials {
-			if body.Credentials[i].ID == id {
-				idx = i
-				break
-			}
-		}
+		ref := argString(req.Args, "id")
+		idx := findCredentialIndex(body, ref)
 		if idx < 0 {
 			return protocol.Fail(protocol.CodeNotFound, "credential not found")
 		}
@@ -161,7 +153,7 @@ func (d *Daemon) handleAdmin(req protocol.Request) protocol.Response {
 			return protocol.Fail(protocol.CodeInternal, err.Error())
 		}
 		d.redactor.Reset(secretsOf(body)...)
-		return protocol.OK(map[string]any{"status": "removed", "id": id})
+		return protocol.OK(map[string]any{"status": "removed", "id": ref})
 	case "policy.add":
 		body, err := d.store.Body()
 		if err != nil {
@@ -271,6 +263,22 @@ func (d *Daemon) rotatePassword(req protocol.Request) protocol.Response {
 	return protocol.OK(map[string]any{"status": "password rotated"})
 }
 
+// findCredentialIndex resolves a credential by label (the primary key) first,
+// then by its internal ID. Labels are unique after every add.
+func findCredentialIndex(body *store.Body, ref string) int {
+	for i := range body.Credentials {
+		if body.Credentials[i].Label == ref {
+			return i
+		}
+	}
+	for i := range body.Credentials {
+		if body.Credentials[i].ID == ref {
+			return i
+		}
+	}
+	return -1
+}
+
 func (d *Daemon) credAdd(req protocol.Request) protocol.Response {
 	body, err := d.store.Body()
 	if err != nil {
@@ -299,11 +307,31 @@ func (d *Daemon) credAdd(req protocol.Request) protocol.Response {
 		return protocol.Fail(protocol.CodeBadArgs, "risk_level must be normal or high")
 	}
 	now := time.Now()
-	c := store.Credential{
-		ID: newID("cred_"), Kind: kind, Label: label, RiskLevel: risk,
-		Tags: argStrings(req.Args, "tags"), CreatedAt: now, UpdatedAt: now, Secret: s,
+	id := newID("cred_")
+	createdAt := now
+	if idx := findCredentialIndex(body, label); idx >= 0 {
+		id = body.Credentials[idx].ID
+		createdAt = body.Credentials[idx].CreatedAt
 	}
-	body.Credentials = append(body.Credentials, c)
+	c := store.Credential{
+		ID: id, Kind: kind, Label: label, RiskLevel: risk,
+		Tags: argStrings(req.Args, "tags"), CreatedAt: createdAt, UpdatedAt: now, Secret: s,
+	}
+	if idx := findCredentialIndex(body, label); idx >= 0 {
+		body.Credentials[idx] = c
+		// Enforce label uniqueness even for vaults created before labels
+		// became the primary key.
+		kept := body.Credentials[:0]
+		for _, item := range body.Credentials {
+			if item.Label == label && item.ID != c.ID {
+				continue
+			}
+			kept = append(kept, item)
+		}
+		body.Credentials = kept
+	} else {
+		body.Credentials = append(body.Credentials, c)
+	}
 	if err := d.store.Save(body); err != nil {
 		return protocol.Fail(protocol.CodeInternal, err.Error())
 	}

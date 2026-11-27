@@ -46,13 +46,8 @@ func (d *Daemon) startAction(req protocol.Request, policyAction, execAction stri
 		// A fill handle is already a capability; consumption is governed by
 		// the fill policy but needs no credential id from the caller.
 		cred = &store.Credential{ID: "fill-handle", Kind: store.KindWeb}
-	} else {
-		for i := range body.Credentials {
-			if body.Credentials[i].ID == credID {
-				cred = &body.Credentials[i]
-				break
-			}
-		}
+	} else if idx := findCredentialIndex(body, credID); idx >= 0 {
+		cred = &body.Credentials[idx]
 	}
 	if cred == nil {
 		return protocol.Fail(protocol.CodeNotFound, "credential not found")
@@ -160,13 +155,8 @@ func (d *Daemon) execute(ctx context.Context, p *pending) (map[string]any, *prot
 	var cred *store.Credential
 	if p.op == "fill.apply" {
 		cred = &store.Credential{ID: "fill-handle", Kind: store.KindWeb}
-	} else {
-		for i := range body.Credentials {
-			if body.Credentials[i].ID == p.credID {
-				cred = &body.Credentials[i]
-				break
-			}
-		}
+	} else if idx := findCredentialIndex(body, p.credID); idx >= 0 {
+		cred = &body.Credentials[idx]
 	}
 	if cred == nil {
 		return nil, &protocol.Error{Code: protocol.CodeNotFound, Message: "credential no longer exists"}

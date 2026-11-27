@@ -47,8 +47,8 @@ func TestDocsCoversEveryPublicCommand(t *testing.T) {
 		lang    string
 		phrases []string
 	}{
-		{"en", []string{"## AI integration contract", "### Exit codes", "cred show", "confirmation_id"}},
-		{"zh-CN", []string{"## AI 集成契约", "### 退出码", "cred show", "confirmation_id"}},
+		{"en", []string{"## AI integration contract", "### Exit codes", "cred show", "confirmation_id", "Use credential labels with `--cred`"}},
+		{"zh-CN", []string{"## AI 集成契约", "### 退出码", "cred show", "confirmation_id", "`--cred` 使用凭据 label"}},
 	}
 	for _, tc := range cases {
 		code, out := executeText("docs", "--lang", tc.lang)

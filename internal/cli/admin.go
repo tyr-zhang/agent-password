@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strconv"
 	"strings"
 	"time"
 
@@ -57,9 +58,12 @@ func init() {
 			{Name: "secret", Summary: "optional JSON secret object (for automation only)"},
 			{Name: "risk", Summary: "normal or high (high forces confirmation)"},
 			{Name: "tags", Summary: "comma-separated tags"},
-			{Name: "port", Summary: "server port (optional)"},
+			{Name: "port", Summary: "server port (optional; overrides secret.port)"},
 		},
-		Doc: []string{"Without --secret, fields are read from the terminal/stdin; sensitive fields are hidden."},
+		Doc: []string{
+			"Without --secret, fields are read from the terminal/stdin; sensitive fields are hidden.",
+			"Adding an existing label overwrites that credential; its ID and created_at are preserved.",
+		},
 		Run: cmdCredAdd,
 	})
 	register(&Command{
@@ -67,7 +71,7 @@ func init() {
 		Summary: "list credential metadata", Run: simpleCall("cred.list"),
 	})
 	register(&Command{
-		Name: "cred show", Group: "Management (human)", Syntax: "agent-pwd cred show <id>",
+		Name: "cred show", Group: "Management (human)", Syntax: "agent-pwd cred show <id|label>",
 		Summary: "show metadata only; there is no path that prints a secret",
 		Run: func(c *Context) int {
 			result, e := Call("cred.show", map[string]any{"id": c.Arg(0)})
@@ -75,7 +79,7 @@ func init() {
 		},
 	})
 	register(&Command{
-		Name: "cred rm", Group: "Management (human)", Syntax: "agent-pwd cred rm <id>",
+		Name: "cred rm", Group: "Management (human)", Syntax: "agent-pwd cred rm <id|label>",
 		Summary: "delete a credential",
 		Run: func(c *Context) int {
 			result, e := Call("cred.rm", map[string]any{"id": c.Arg(0)})
@@ -299,6 +303,7 @@ func cmdCredAdd(c *Context) int {
 
 func promptSecret(c *Context, kind store.Kind) (store.Secret, error) {
 	var s store.Secret
+	var portText string
 	fields := []struct {
 		name   string
 		target *string
@@ -325,7 +330,8 @@ func promptSecret(c *Context, kind store.Kind) (store.Secret, error) {
 			target *string
 			hidden bool
 		}{{"protocol (ssh/mysql/postgres/redis)", &s.Protocol, false}, {"host", &s.Host, false},
- {"server_user", &s.ServerUser, false},
+			{"port (optional)", &portText, false},
+			{"server_user", &s.ServerUser, false},
 			{"password (or leave empty for key)", &s.Password, true},
 			{"private_key (optional)", &s.PrivateKey, true},
 			{"key_path (optional)", &s.KeyPath, false},
@@ -345,8 +351,20 @@ func promptSecret(c *Context, kind store.Kind) (store.Secret, error) {
 		}
 		*f.target = v
 	}
+	if n := parsePort(portText); n > 0 {
+		s.Port = n
+	}
+	// Backward-compatible alias: --port overrides secret.port.
 	if v := c.Int("port", 0); v > 0 {
 		s.Port = v
 	}
 	return s, nil
+}
+
+func parsePort(text string) int {
+	n, err := strconv.Atoi(strings.TrimSpace(text))
+	if err != nil || n <= 0 || n > 65535 {
+		return 0
+	}
+	return n
 }

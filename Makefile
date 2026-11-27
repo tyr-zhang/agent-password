@@ -10,7 +10,7 @@ LDFLAGS := -s -w \
   -X github.com/tyr-zhang/agent-password/internal/build.Commit=$(COMMIT) \
   -X github.com/tyr-zhang/agent-password/internal/build.Date=$(DATE)
 
-.PHONY: all build test race vet cross docs docs-check i18n-check helper clean
+.PHONY: all build test race vet cross docs docs-check i18n-check samples-check helper clean
 
 all: build test
 
@@ -48,6 +48,11 @@ docs-check: build
 
 i18n-check:
 	$(GO) test ./internal/i18n ./internal/cli
+
+samples-check:
+	@find samples -type f -name '*.sh' -exec bash -n {} +
+	@python3 -c "import ast,pathlib; [ast.parse(p.read_text()) for p in pathlib.Path('samples').rglob('*.py')]"
+	@echo "sample scripts are syntactically valid"
 
 helper:
 	swiftc -O -target arm64-apple-macos11 helpers/touchid/main.swift -o internal/platform/assets/touchid-helper-arm64

@@ -41,8 +41,8 @@
 - `agent-pwd cred list` — 列出凭据元数据
 - `agent-pwd cred restore --from <backup>` — 经过明确的人工验证后恢复 vault 备份
   flags: --from
-- `agent-pwd cred rm <id>` — 删除凭据
-- `agent-pwd cred show <id>` — 仅显示元数据；没有任何路径会打印密钥
+- `agent-pwd cred rm <id|label>` — 删除凭据
+- `agent-pwd cred show <id|label>` — 仅显示元数据；没有任何路径会打印密钥
 - `agent-pwd docs [--format md|json]` — 打印由命令注册表生成的 AI 集成契约
   flags: --format
 - `agent-pwd doctor` — 检查权限、备份、审计链、daemon 和平台加固
@@ -71,6 +71,7 @@ agent-pwd 是凭据代理：你可以使用（USE）凭据，但不能读取（R
 - 执行 SSH 命令、SQL 查询、API 调用，以及注入了环境变量的子进程。
 - 为受信任的子进程申请一次性 `fill` handle；该 handle 对人工读取者毫无用处。
 - 当高风险操作需要确认时，请求确认。
+- `--cred` 使用凭据 label；ID 仅为兼容保留，且 label 优先匹配。
 
 ### 你不能做什么
 - `cred show` 只返回元数据；读取 vault.dat 或 audit.log 永远得不到明文。

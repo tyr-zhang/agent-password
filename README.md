@@ -41,10 +41,19 @@ Credentials are entered field by field; sensitive fields are hidden and never en
 ```bash
 agent-pwd cred add web github
 agent-pwd cred add apikey openai
-agent-pwd cred add server prod-mysql --port 3306
+agent-pwd cred add server prod-mysql          # port is prompted like other fields
 agent-pwd cred add envvar deploy-token
 agent-pwd cred list
-agent-pwd cred show <id>           # metadata only; no secret output path exists
+agent-pwd cred show <label|id>     # metadata only; no secret output path exists
+```
+
+A credential **label is the primary key**. Adding the same label overwrites that credential while preserving its ID and `created_at`. Everywhere a credential is referenced (`--cred`, `cred show`, `cred rm`), use the label or the legacy `cred_...` ID; if a label happens to equal another credential's ID, the **label wins**.
+
+For automation, put every server field — including `port` — in `--secret`; `--port` is kept only as a compatibility alias:
+
+```bash
+agent-pwd cred add server prod-mysql \
+  --secret '{"protocol":"mysql","host":"127.0.0.1","port":3306,"server_user":"app","password":"<password>","database":"appdb"}'
 ```
 
 Actions:
@@ -74,6 +83,8 @@ agent-pwd docs > ~/.claude/agent-pwd-contract.md
 ```
 
 Embed the generated contract in `CLAUDE.md` or an agent skill description. It documents capabilities, limits, JSON schemas, exit codes, and the confirmation workflow — including the explicit rule that the AI cannot read secrets.
+
+A ready-to-use skill is provided at [`skills/agent-pwd/SKILL.md`](skills/agent-pwd/SKILL.md). The complete operator manual is [`docs/manual.md`](docs/manual.md). Runnable demos for every scenario live in [`samples/`](samples/README.md) — web login, SSH, SQL, API, env injection, fill, confirmation and ops.
 
 ## Languages
 

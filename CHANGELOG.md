@@ -6,7 +6,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
-Changes will be listed here as they land.
+### Added
+
+- Credential labels are now the primary key: `cred add` overwrites an existing label in place, and `--cred`, `cred show` and `cred rm` accept labels as well as IDs.
+- Bilingual operation manuals and an `agent-pwd` AI skill under `skills/agent-pwd/`.
+- `samples/` with runnable demos for web login, SSH, SQL, API, env injection, fill, confirmation and ops, each scenario with its own bilingual README, plus a `make samples-check` syntax check.
+- Translation-coverage checks that fail when source strings or command-registration prose lack a zh-CN translation.
+
+### Changed
+
+- Credential reference resolution checks labels before IDs, so a label that collides with another credential's ID resolves deterministically to the label.
+- `server` port is canonical in `secret.port`; `--port` remains a compatibility alias that overrides it.
+- Session idle timeout defaults to 8 hours (hard cap 24 hours), configurable with `AGENT_PWD_*_TIMEOUT` environment variables at daemon startup.
 
 ## [1.0.0]
 
