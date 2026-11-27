@@ -1,14 +1,14 @@
 module github.com/tyr-zhang/agent-password
 
-go 1.25.4
+go 1.26.0
 
 require (
 	github.com/Microsoft/go-winio v0.6.0
 	github.com/go-sql-driver/mysql v1.7.1
 	github.com/jackc/pgx/v5 v5.6.0
 	golang.org/x/crypto v0.25.0
-	golang.org/x/sys v0.36.0
-	golang.org/x/term v0.22.0
+	golang.org/x/sys v0.50.0
+	golang.org/x/term v0.48.0
 )
 
 require (
